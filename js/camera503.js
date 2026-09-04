@@ -1,11 +1,10 @@
 /**
- * Hasselblad 503CX Analog Film Experience Engine
- * 
- * Exact Flow:
- * 1. Closed 503CX body -> Tap hood lid to pop open
- * 2. Ground glass reveals beautiful Southern Italy landscape
- * 3. Press classic shutter button -> Mechanical mirror slap & leaf shutter
- * 4. 6x6 Square Film photo appears with smooth Deep Zoom inspection
+ * Hasselblad 503CX Authentic Film Experience Controller
+ * Photorealistic Top-Down POV:
+ * 1. Closed Hood Lid -> Click to pop open
+ * 2. Open Hood with Ground Glass showing Southern Italy on Film
+ * 3. Shutter click with heavy mechanical mirror slap
+ * 4. Full 120 Film Square photograph with ultra-smooth deep zoom
  */
 
 class Camera503Engine {
@@ -13,9 +12,6 @@ class Camera503Engine {
     this.isHoodOpen = false;
     this.hasTakenShot = false;
     this.viewer = null;
-
-    // High resolution Southern Italy coastal scenery DZI / tileSource
-    this.photoSource = "https://openseadragon.github.io/example-images/duomo/duomo.dzi";
   }
 
   init() {
@@ -23,19 +19,19 @@ class Camera503Engine {
   }
 
   setupEventListeners() {
-    // 1. Hood Lid Click (뚜껑 클릭하여 열기)
-    const hoodLid = document.getElementById("hood-closed-lid");
-    if (hoodLid) {
-      hoodLid.addEventListener("click", () => this.openHood());
+    // 1. Hood Lid Click (뚜껑 클릭)
+    const lidTrigger = document.getElementById("hood-lid-trigger");
+    if (lidTrigger) {
+      lidTrigger.addEventListener("click", () => this.openHood());
     }
 
-    // 2. Shutter Button Click (셔터 누르기)
-    const shutterBtn = document.getElementById("classic-shutter-btn");
-    if (shutterBtn) {
-      shutterBtn.addEventListener("click", () => this.takeShot());
+    // 2. Shutter Release Button (셔터 누르기)
+    const shutterTrigger = document.getElementById("shutter-trigger");
+    if (shutterTrigger) {
+      shutterTrigger.addEventListener("click", () => this.takeShot());
     }
 
-    // Spacebar to trigger shutter when hood is open
+    // Spacebar keyboard shortcut
     window.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
         e.preventDefault();
@@ -47,8 +43,8 @@ class Camera503Engine {
       }
     });
 
-    // 3. Reset Button (다시 뚜껑 닫고 찍기)
-    const resetBtn = document.getElementById("reset-camera-btn");
+    // 3. Re-shoot Reset Button (다시 뚜껑 닫고 찍기)
+    const resetBtn = document.getElementById("reshoot-camera-btn");
     if (resetBtn) {
       resetBtn.addEventListener("click", () => this.resetCamera());
     }
@@ -59,129 +55,131 @@ class Camera503Engine {
     if (this.isHoodOpen) return;
     this.isHoodOpen = true;
 
-    // 1. Play mechanical pop open sound
+    // 1. Play authentic metallic hood pop sound
     if (window.cameraAudio) {
       window.cameraAudio.playHoodOpen();
     }
 
-    // 2. Hide closed lid, show open folding hood
-    const closedLid = document.getElementById("hood-closed-lid");
-    const openHood = document.getElementById("hood-opened-view");
-    const stepGuide = document.getElementById("step-guide-text");
-    const shutterBtn = document.getElementById("classic-shutter-btn");
+    // 2. Transition from closed camera to open hood camera
+    const cameraClosed = document.getElementById("camera-closed-view");
+    const cameraOpen = document.getElementById("camera-open-view");
+    const guideText = document.getElementById("camera-step-guide");
 
-    if (closedLid) closedLid.classList.add("hood-popped");
-    setTimeout(() => {
-      if (closedLid) closedLid.classList.add("hidden");
-      if (openHood) openHood.classList.remove("hidden");
-    }, 200);
-
-    // Update guide text
-    if (stepGuide) {
-      stepGuide.innerHTML = `<span class="text-[#ff6a00] font-bold animate-pulse">●</span> 우측 하단 <span class="text-white font-bold">셔터 버튼</span>을 눌러 사진을 찍으세요.`;
+    if (cameraClosed) {
+      cameraClosed.classList.add("opacity-0", "pointer-events-none");
+    }
+    if (cameraOpen) {
+      cameraOpen.classList.remove("opacity-0", "pointer-events-none");
     }
 
-    // Highlight shutter button
-    if (shutterBtn) {
-      shutterBtn.classList.add("ring-4", "ring-[#ff6a00]/50", "animate-pulse");
+    // Update guide
+    if (guideText) {
+      guideText.innerHTML = `
+        <span class="w-2.5 h-2.5 rounded-full bg-[#ff6a00] animate-ping inline-block mr-1"></span>
+        <span class="text-white font-bold">뷰파인더에 남부 이탈리아 풍경이 비칩니다.</span>
+        <span class="text-zinc-400 ml-1">우측 하단 셔터를 눌러 촬영하세요!</span>
+      `;
     }
   }
 
-  // 셔터 누르기 (찰칵-철컥!)
+  // 셔터 누르기 (찰-칵! 철컥!)
   takeShot() {
     if (!this.isHoodOpen || this.hasTakenShot) return;
     this.hasTakenShot = true;
 
-    // 1. Play heavy 503CX mirror slap and shutter sound
+    // 1. Play heavy 503CX mirror slap & leaf shutter
     if (window.cameraAudio) {
       window.cameraAudio.playShutter();
     }
 
-    // 2. Instant Blackout & Flash
-    const blackout = document.getElementById("shot-blackout");
+    // 2. Instant optical flash & blackout
+    const blackout = document.getElementById("screen-blackout");
     blackout.classList.remove("opacity-0");
     blackout.classList.add("opacity-100");
 
-    // 3. Transition from camera body to 6x6 Film Photo Zoom Viewer
+    // 3. Switch to 120 Film Square Photo Zoom Viewer
     setTimeout(() => {
-      const cameraStage = document.getElementById("camera-body-stage");
+      const cameraStage = document.getElementById("camera-pov-stage");
       const photoStage = document.getElementById("photo-result-stage");
-      const stepGuide = document.getElementById("step-guide-text");
+      const guideText = document.getElementById("camera-step-guide");
 
       if (cameraStage) cameraStage.classList.add("hidden");
       if (photoStage) photoStage.classList.remove("hidden");
 
-      if (stepGuide) {
-        stepGuide.innerHTML = `<span>📷 120 중형 필름 현상 완료!</span> <span class="text-zinc-400">마우스 휠이나 터치로 세부 디테일을 마음껏 확대해보세요.</span>`;
+      if (guideText) {
+        guideText.innerHTML = `
+          <span>🎞️ <strong class="text-white">120 중형 필름 현상 완료!</strong></span>
+          <span class="text-zinc-400 ml-2">마우스 휠이나 터치로 세부 디테일을 마음껏 확대해보세요.</span>
+        `;
       }
 
-      // Initialize OpenSeadragon for smooth deep zooming on the captured photo
-      this.initPhotoViewer();
+      this.initFilmZoomViewer();
 
       // Fade out blackout
       blackout.classList.replace("opacity-100", "opacity-0");
-    }, 180);
+    }, 200);
   }
 
-  // OpenSeadragon 필름 사진 딥 줌 뷰어 초기화
-  initPhotoViewer() {
+  // Initialize smooth deep zoom on the captured 120 film photo
+  initFilmZoomViewer() {
     if (this.viewer) {
       this.viewer.viewport.goHome(true);
       return;
     }
 
     this.viewer = OpenSeadragon({
-      id: "film-photo-viewer",
+      id: "film-zoom-viewer",
       prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
-      tileSources: this.photoSource,
+      tileSources: {
+        type: 'image',
+        url: 'assets/southern_italy.jpg'
+      },
       showNavigationControl: false,
       showNavigator: false,
-      animationTime: 1.5,
-      springStiffness: 6.0,
+      animationTime: 1.2,
+      springStiffness: 7.0,
       zoomPerScroll: 1.3,
-      minZoomImageRatio: 0.85,
-      maxZoomPixelRatio: 8.0,
+      minZoomImageRatio: 0.9,
+      maxZoomPixelRatio: 6.0,
       constrainDuringPan: true,
       visibilityRatio: 0.95
     });
 
-    const zoomIndicator = document.getElementById("film-zoom-val");
+    const zoomText = document.getElementById("current-zoom-pct");
     this.viewer.addHandler("zoom", (e) => {
-      if (zoomIndicator) {
-        const z = Math.round(e.zoom * 100);
-        zoomIndicator.innerText = `${z}%`;
+      if (zoomText) {
+        const pct = Math.round(e.zoom * 100);
+        zoomText.innerText = `${pct}%`;
       }
     });
   }
 
-  // 다시 뚜껑 닫고 처음으로
+  // 다시 뚜껑 닫고 처음으로 (Reset)
   resetCamera() {
     this.isHoodOpen = false;
     this.hasTakenShot = false;
 
-    const cameraStage = document.getElementById("camera-body-stage");
+    const cameraStage = document.getElementById("camera-pov-stage");
     const photoStage = document.getElementById("photo-result-stage");
-    const closedLid = document.getElementById("hood-closed-lid");
-    const openHood = document.getElementById("hood-opened-view");
-    const stepGuide = document.getElementById("step-guide-text");
-    const shutterBtn = document.getElementById("classic-shutter-btn");
+    const cameraClosed = document.getElementById("camera-closed-view");
+    const cameraOpen = document.getElementById("camera-open-view");
+    const guideText = document.getElementById("camera-step-guide");
 
     if (photoStage) photoStage.classList.add("hidden");
     if (cameraStage) cameraStage.classList.remove("hidden");
 
-    if (closedLid) {
-      closedLid.classList.remove("hidden", "hood-popped");
+    if (cameraClosed) {
+      cameraClosed.classList.remove("opacity-0", "pointer-events-none");
     }
-    if (openHood) {
-      openHood.classList.add("hidden");
-    }
-
-    if (shutterBtn) {
-      shutterBtn.classList.remove("ring-4", "ring-[#ff6a00]/50", "animate-pulse");
+    if (cameraOpen) {
+      cameraOpen.classList.add("opacity-0", "pointer-events-none");
     }
 
-    if (stepGuide) {
-      stepGuide.innerHTML = `<span class="animate-bounce inline-block mr-1">👆</span> 카메라 뚜껑을 탭하여 열어보세요.`;
+    if (guideText) {
+      guideText.innerHTML = `
+        <span class="animate-bounce inline-block mr-1">👆</span>
+        <span class="text-white font-bold">카메라 뚜껑을 탭하여 열어보세요.</span>
+      `;
     }
 
     if (window.cameraAudio) {
