@@ -1,12 +1,8 @@
 {
   "name": "camera-simulator",
   "version": "1.0.0",
-  "description": "Hasselblad 907X & CFV 100C Virtual Shooting Experience",
+  "description": "Hasselblad 100MP YouTube Shorts Exact Flow Simulator",
   "scripts": {
-    "dev": "wrangler dev",
     "deploy": "wrangler deploy"
-  },
-  "devDependencies": {
-    "wrangler": "^4.0.0"
   }
 }
