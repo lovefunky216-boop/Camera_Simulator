@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Southern Italy on Film | Hasselblad 503CX</title>
-  <meta name="description" content="핫셀블라드 503CX 뚜껑을 열어 풍경을 보고 셔터를 눌러 필름 사진을 찍고 확대해보는 실감 아날로그 시뮬레이터">
+  <meta name="description" content="핫셀블라드 503CX 아날로그 중형 카메라 일러스트 시뮬레이터. 뚜껑을 열고 셔터를 눌러 120 필름 사진을 찍고 확대해보세요.">
 
   <!-- Tailwind CSS & OpenSeadragon CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,10 +13,10 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 bg-[#09090b] text-zinc-100 select-none overflow-x-hidden font-sans">
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 bg-[#08080a] text-zinc-100 select-none overflow-x-hidden font-sans">
 
-  <!-- 1. 헤더: 미니멀 브랜드 & 안내 가이드 -->
-  <header class="w-full max-w-xl mx-auto flex flex-col items-center justify-center gap-2 pt-1 pb-3">
+  <!-- 1. 헤더: 미니멀 브랜드 & 단계별 안내 가이드 -->
+  <header class="w-full max-w-lg mx-auto flex flex-col items-center justify-center gap-2 pt-1 pb-2">
     <div class="flex items-center gap-2">
       <span class="w-5 h-5 rounded-full bg-[#ff6a00] flex items-center justify-center font-black text-black text-xs">H</span>
       <h1 class="text-xs md:text-sm font-bold tracking-[0.25em] text-white uppercase">
@@ -35,57 +35,50 @@
   </header>
 
   <!-- 2. 메인 시네마틱 스테이지 -->
-  <main class="w-full max-w-xl mx-auto flex flex-col items-center justify-center flex-grow relative">
+  <main class="w-full max-w-lg mx-auto flex flex-col items-center justify-center flex-grow relative">
 
     <!-- 셔터 순간 광학 플래시 & 암전 레이어 -->
     <div id="screen-blackout" class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-150 z-50"></div>
 
     <!-- ============================================================
-         STAGE 1 : 핫셀블라드 503CX 실사 바디 POV (뚜껑 닫힘 & 열림)
+         STAGE 1 : 핫셀블라드 503CX 그래픽 일러스트 바디 (렌즈 + 양손 + 후드 개폐)
          ============================================================ -->
-    <div id="camera-pov-stage" class="relative w-[340px] sm:w-[380px] md:w-[410px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.95)] border-2 border-zinc-800 bg-black">
+    <div id="camera-pov-stage" class="relative w-[320px] sm:w-[380px] md:w-[410px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-zinc-800/80 bg-[#0c0c0e]">
       
-      <!-- [상태 1] 뚜껑이 닫혀있는 503CX 실사 뷰 (상단 렌즈 + 두 손 + 닫힌 뚜껑) -->
-      <div id="camera-closed-view" class="absolute inset-0 z-10 transition-opacity duration-300">
-        <img src="assets/503cx_closed.jpg" alt="Hasselblad 503CX Closed" class="w-full h-full object-cover">
-
-        <!-- 뚜껑 인터랙티브 핫존 클릭 영역 -->
-        <div id="hood-lid-trigger" class="absolute top-[34%] left-[19%] w-[62%] h-[33%] cursor-pointer group flex flex-col items-center justify-center rounded-xl" title="뚜껑 탭하여 열기">
-          <div class="bg-black/75 backdrop-blur-sm border border-[#ff6a00]/70 group-hover:bg-[#ff6a00] group-hover:text-black text-[#ff8e3d] text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg transition-all transform group-hover:scale-105 animate-pulse flex items-center gap-1.5">
+      <!-- [상태 1] 뚜껑이 닫힌 503CX 일러스트 그래픽 (자이스 렌즈 + 양손 + 닫힌 후드) -->
+      <div id="camera-closed-view" class="absolute inset-0 z-10 transition-opacity duration-300 flex items-center justify-center">
+        <img src="assets/503cx_closed.jpg" alt="Hasselblad 503CX Illustration Closed" class="w-full h-full object-cover select-none pointer-events-none">
+        
+        <!-- 뚜껑 인터랙티브 핫스팟 클릭 영역 -->
+        <div id="hood-lid-trigger" class="absolute top-[36%] left-[20%] w-[60%] h-[32%] cursor-pointer group flex flex-col items-center justify-center rounded-2xl" title="뚜껑 열기">
+          <div class="bg-black/85 backdrop-blur-md border border-[#ff6a00]/80 group-hover:bg-[#ff6a00] group-hover:text-black text-[#ff8e3d] text-xs font-bold px-4 py-2 rounded-full shadow-2xl transition-all transform group-hover:scale-105 animate-pulse flex items-center gap-1.5">
             <span>👆</span>
             <span>TAP TO OPEN</span>
           </div>
         </div>
       </div>
 
-      <!-- [상태 2] 뚜껑이 열려있는 503CX 실사 뷰 (상단 렌즈 + 두 손 + 열린 후드 + 뷰파인더) -->
-      <div id="camera-open-view" class="absolute inset-0 z-20 opacity-0 pointer-events-none transition-opacity duration-300">
-        <img src="assets/503cx_open.jpg" alt="Hasselblad 503CX Open" class="w-full h-full object-cover">
+      <!-- [상태 2] 뚜껑이 열리고 뷰파인더에 남부 이탈리아가 비치는 503CX 일러스트 그래픽 -->
+      <div id="camera-open-view" class="absolute inset-0 z-10 opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center">
+        <img src="assets/503cx_open.jpg" alt="Hasselblad 503CX Illustration Open" class="w-full h-full object-cover select-none pointer-events-none">
 
-        <!-- 그라운드 글래스 스크린 영역: 남부 이탈리아 풍경 실시간 투영 -->
-        <div class="absolute top-[40.6%] left-[25.5%] w-[49%] h-[23.8%] overflow-hidden rounded-sm border border-zinc-600 shadow-inner bg-black">
-          <!-- 남부 이탈리아 풍경 -->
-          <img src="assets/southern_italy.jpg" alt="Southern Italy Viewfinder" class="w-full h-full object-cover brightness-105 contrast-105">
-          
-          <!-- 핫셀블라드 뷰파인더 격자 십자선 오버레이 -->
-          <div class="absolute inset-0 pointer-events-none grid-crosshairs opacity-70"></div>
-          <div class="absolute bottom-1 inset-x-0 text-center text-[7px] tracking-[0.2em] text-white/50 font-serif italic pointer-events-none">
-            HASSELBLAD
-          </div>
-        </div>
-
-        <!-- 전면 크롬 셔터 릴리즈 버튼 트리거 -->
-        <div id="shutter-trigger" class="absolute bottom-[10%] right-[10%] cursor-pointer group flex flex-col items-center gap-1 z-30" title="찰칵! 사진 찍기 (스페이스바)">
-          <div class="w-14 h-14 rounded-full bg-gradient-to-b from-white via-zinc-300 to-zinc-600 p-1 shadow-2xl border-2 border-white group-hover:scale-105 group-active:scale-95 transition-transform flex items-center justify-center">
-            <div class="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-500 shadow-inner flex items-center justify-center text-[#ff6a00] text-xs font-bold">
-              📷
+        <!-- 셔터 인터랙티브 핫스팟 클릭 영역 (카메라 우측 하단 셔터 위치) -->
+        <div id="shutter-trigger" class="absolute bottom-[28%] right-[8%] w-[22%] h-[14%] cursor-pointer group flex items-center justify-center rounded-full" title="셔터 누르기">
+          <div class="relative flex items-center justify-center">
+            <span class="absolute w-12 h-12 rounded-full bg-[#ff6a00] opacity-40 animate-ping"></span>
+            <div class="relative w-10 h-10 rounded-full bg-gradient-to-tr from-[#ff4500] to-[#ff8e3d] border-2 border-white shadow-2xl flex items-center justify-center transform group-hover:scale-110 active:scale-95 transition-transform">
+              <span class="w-3.5 h-3.5 rounded-full bg-white"></span>
             </div>
           </div>
-          <span class="text-[9px] bg-black/80 px-2 py-0.5 rounded-full font-mono text-[#ff8e3d] font-bold tracking-wider group-hover:text-white">
-            찰칵! SHUTTER
-          </span>
         </div>
 
+        <!-- 하단 셔터 안내 버튼 -->
+        <div class="absolute bottom-4 inset-x-0 flex justify-center pointer-events-auto">
+          <button id="shutter-btn-bottom" class="bg-black/85 hover:bg-[#ff6a00] hover:text-black border border-[#ff6a00]/70 text-[#ff8e3d] font-mono text-xs font-bold px-4 py-2 rounded-full shadow-2xl transition-all transform active:scale-95 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span>SHUTTER RELEASE (또는 SPACE 키)</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -106,7 +99,7 @@
         </div>
 
         <!-- 필름 사진 딥 줌 컨테이너 (OpenSeadragon) -->
-        <div id="film-zoom-viewer" class="relative w-[320px] h-[320px] sm:w-[440px] sm:h-[440px] md:w-[500px] md:h-[500px] bg-[#050507] rounded-sm overflow-hidden cursor-crosshair"></div>
+        <div id="film-zoom-viewer" class="relative w-[320px] h-[320px] sm:w-[440px] sm:h-[440px] md:w-[480px] md:h-[480px] bg-[#050507] rounded-sm overflow-hidden cursor-crosshair"></div>
 
         <!-- 하단 확대율 안내 -->
         <div class="w-full flex items-center justify-between text-[11px] font-mono text-zinc-400 px-1 pt-2.5">
@@ -131,7 +124,7 @@
   </main>
 
   <!-- 3. 푸터 -->
-  <footer class="w-full max-w-xl mx-auto text-center py-2 text-[10px] text-zinc-600 font-mono">
+  <footer class="w-full max-w-lg mx-auto text-center py-2 text-[10px] text-zinc-600 font-mono">
     Hasselblad 503CX Film Camera Simulator · Kodak Portra 400
   </footer>
 

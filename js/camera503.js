@@ -1,10 +1,14 @@
 /**
- * Hasselblad 503CX Authentic Film Experience Controller
- * Photorealistic Top-Down POV:
- * 1. Closed Hood Lid -> Click to pop open
- * 2. Open Hood with Ground Glass showing Southern Italy on Film
- * 3. Shutter click with heavy mechanical mirror slap
- * 4. Full 120 Film Square photograph with ultra-smooth deep zoom
+ * Hasselblad 503CX Film Camera Controller
+ * 
+ * Flow:
+ * 1. Closed Hood 503CX Illustration (Zeiss CF 80mm, Hands, Closed Lid)
+ *    -> Click lid to pop open with metallic latch sound
+ * 2. Open Hood 503CX Illustration (4 folding flaps, Ground Glass showing Southern Italy on Film)
+ *    -> Click shutter button (or SPACE) with heavy mirror slap & mechanical shutter sound
+ * 3. Optical Flash & Blackout
+ * 4. 120 Square Medium Format Film Photo (Positano) appears with infinite smooth Deep Zoom
+ * 5. Single '↺ 뚜껑 닫고 다시 찍기' reset button
  */
 
 class Camera503Engine {
@@ -22,13 +26,34 @@ class Camera503Engine {
     // 1. Hood Lid Click (뚜껑 클릭)
     const lidTrigger = document.getElementById("hood-lid-trigger");
     if (lidTrigger) {
-      lidTrigger.addEventListener("click", () => this.openHood());
+      lidTrigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.openHood();
+      });
     }
 
-    // 2. Shutter Release Button (셔터 누르기)
+    const closedView = document.getElementById("camera-closed-view");
+    if (closedView) {
+      closedView.addEventListener("click", () => {
+        if (!this.isHoodOpen) this.openHood();
+      });
+    }
+
+    // 2. Shutter Release Button Click (셔터 누르기)
     const shutterTrigger = document.getElementById("shutter-trigger");
     if (shutterTrigger) {
-      shutterTrigger.addEventListener("click", () => this.takeShot());
+      shutterTrigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.takeShot();
+      });
+    }
+
+    const shutterBtnBottom = document.getElementById("shutter-btn-bottom");
+    if (shutterBtnBottom) {
+      shutterBtnBottom.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.takeShot();
+      });
     }
 
     // Spacebar keyboard shortcut
@@ -43,24 +68,24 @@ class Camera503Engine {
       }
     });
 
-    // 3. Re-shoot Reset Button (다시 뚜껑 닫고 찍기)
+    // 3. Re-shoot / Reset Button (다시 찍기)
     const resetBtn = document.getElementById("reshoot-camera-btn");
     if (resetBtn) {
       resetBtn.addEventListener("click", () => this.resetCamera());
     }
   }
 
-  // 뚜껑 열기 (후드 팝업)
+  // 뚜껑 열기 (후드 팝업 & 금속 래치 사운드)
   openHood() {
     if (this.isHoodOpen) return;
     this.isHoodOpen = true;
 
-    // 1. Play authentic metallic hood pop sound
+    // 1. Play authentic metallic hood pop-open sound
     if (window.cameraAudio) {
       window.cameraAudio.playHoodOpen();
     }
 
-    // 2. Transition from closed camera to open hood camera
+    // 2. Transition from closed view to open ground glass view
     const cameraClosed = document.getElementById("camera-closed-view");
     const cameraOpen = document.getElementById("camera-open-view");
     const guideText = document.getElementById("camera-step-guide");
@@ -68,34 +93,37 @@ class Camera503Engine {
     if (cameraClosed) {
       cameraClosed.classList.add("opacity-0", "pointer-events-none");
     }
+
     if (cameraOpen) {
       cameraOpen.classList.remove("opacity-0", "pointer-events-none");
     }
 
-    // Update guide
+    // Update guide text
     if (guideText) {
       guideText.innerHTML = `
         <span class="w-2.5 h-2.5 rounded-full bg-[#ff6a00] animate-ping inline-block mr-1"></span>
         <span class="text-white font-bold">뷰파인더에 남부 이탈리아 풍경이 비칩니다.</span>
-        <span class="text-zinc-400 ml-1">우측 하단 셔터를 눌러 촬영하세요!</span>
+        <span class="text-zinc-400 ml-1">우측 셔터를 눌러 촬영하세요!</span>
       `;
     }
   }
 
-  // 셔터 누르기 (찰-칵! 철컥!)
+  // 셔터 누르기 (찰-칵! 묵직한 미러 릴리즈 사운드 + 광학 플래시 + 현상 사진 전환)
   takeShot() {
     if (!this.isHoodOpen || this.hasTakenShot) return;
     this.hasTakenShot = true;
 
-    // 1. Play heavy 503CX mirror slap & leaf shutter
+    // 1. Play heavy 503CX mirror slap & mechanical leaf shutter
     if (window.cameraAudio) {
       window.cameraAudio.playShutter();
     }
 
-    // 2. Instant optical flash & blackout
+    // 2. Optical Flash & Blackout animation
     const blackout = document.getElementById("screen-blackout");
-    blackout.classList.remove("opacity-0");
-    blackout.classList.add("opacity-100");
+    if (blackout) {
+      blackout.classList.remove("opacity-0");
+      blackout.classList.add("opacity-100");
+    }
 
     // 3. Switch to 120 Film Square Photo Zoom Viewer
     setTimeout(() => {
@@ -116,11 +144,13 @@ class Camera503Engine {
       this.initFilmZoomViewer();
 
       // Fade out blackout
-      blackout.classList.replace("opacity-100", "opacity-0");
+      if (blackout) {
+        blackout.classList.replace("opacity-100", "opacity-0");
+      }
     }, 200);
   }
 
-  // Initialize smooth deep zoom on the captured 120 film photo
+  // 촬영된 120 중형 필름 딥 줌 뷰어 초기화
   initFilmZoomViewer() {
     if (this.viewer) {
       this.viewer.viewport.goHome(true);
@@ -181,15 +211,12 @@ class Camera503Engine {
         <span class="text-white font-bold">카메라 뚜껑을 탭하여 열어보세요.</span>
       `;
     }
-
-    if (window.cameraAudio) {
-      window.cameraAudio.playHoodOpen();
-    }
   }
 }
 
-window.camera503 = new Camera503Engine();
-
-window.addEventListener("DOMContentLoaded", () => {
+// Global initialization on DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  window.cameraAudio = new CameraAudioEngine();
+  window.camera503 = new Camera503Engine();
   window.camera503.init();
 });
