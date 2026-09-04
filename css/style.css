@@ -1,88 +1,197 @@
 /* ============================================================
-   Hasselblad 100MP YouTube Shorts Exact Flow Styling
+   Hasselblad 503CX Film Camera Styling & Animations
    ============================================================ */
 
 :root {
   --hb-orange: #ff6a00;
-  --hb-orange-dark: #d65100;
-  --hb-orange-light: #ff8e3d;
+  --hb-chrome: #e4e4eb;
+  --hb-leather: #141416;
 }
 
-body {
-  background: radial-gradient(circle at 50% 15%, #18181f 0%, #08080a 100%);
-  color: #e4e4e7;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  user-select: none;
-  -webkit-user-select: none;
-  overflow-x: hidden;
-}
-
-.font-mono-cam {
-  font-family: "SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
-}
-
-/* ============================================================
-   Front Camera Rig (Hasselblad 907X held in front of scene)
-   ============================================================ */
-
-#camera-front-rig {
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-}
-
-/* 907X Shutter Button */
-.shutter-907x-btn {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #383842 0%, #1e1e24 70%, #141418 100%);
-  padding: 5px;
-  border: 2px solid #e4e4eb;
+/* 503CX Main Cube Housing */
+.camera-503-housing {
+  width: 360px;
+  background: linear-gradient(180deg, #1e1e24 0%, #121215 100%);
+  border-radius: 20px;
+  border: 4px solid #2e2e38;
   box-shadow: 
-    0 12px 25px -4px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(255, 255, 255, 0.2),
-    inset 0 2px 3px rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: transform 0.1s ease, filter 0.2s ease;
+    0 25px 60px rgba(0, 0, 0, 0.95),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
 }
 
-.shutter-907x-inner {
+/* Chrome Trim Frame */
+.chrome-trim-frame {
+  position: absolute;
+  inset: -3px;
+  border: 3px solid #d4d4dc;
+  border-radius: 22px;
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Closed Hood Lid Box */
+.hood-lid-box {
+  width: 300px;
+  height: 270px;
+  background: radial-gradient(circle, #25252d 0%, #161619 80%);
+  border-radius: 12px;
+  border: 3px solid #d4d4dc;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+}
+
+.hood-lid-box:hover {
+  filter: brightness(1.08);
+}
+
+.hood-lid-surface {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff7a1a 0%, #d65100 65%, #a33800 100%);
-  border: 1px solid #ff9d54;
-  box-shadow: 
-    inset 0 2px 4px rgba(255, 255, 255, 0.6),
-    inset 0 -3px 6px rgba(0, 0, 0, 0.6),
-    0 4px 12px rgba(214, 81, 0, 0.5);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1f1f26 0%, #111114 100%);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Hood Popping Animation */
+.hood-popped {
+  transform: perspective(600px) rotateX(-80deg) scale(0.9);
+  opacity: 0;
+}
+
+/* Opened Hood Flaps & Ground Glass Screen */
+.hood-flaps-container {
+  width: 310px;
+  height: 310px;
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.shutter-907x-btn:hover {
+/* 4 Folding Metal Flaps */
+.flap-top {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 32px;
+  background: linear-gradient(to bottom, #2b2b34, #141418);
+  border-bottom: 2px solid #474754;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+  z-index: 10;
+}
+
+.flap-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  height: 32px;
+  background: linear-gradient(to top, #2b2b34, #141418);
+  border-top: 2px solid #474754;
+  z-index: 10;
+}
+
+.flap-left {
+  position: absolute;
+  top: 15px;
+  bottom: 15px;
+  left: 0;
+  width: 32px;
+  background: linear-gradient(to right, #2b2b34, #141418);
+  border-right: 2px solid #474754;
+  z-index: 10;
+}
+
+.flap-right {
+  position: absolute;
+  top: 15px;
+  bottom: 15px;
+  right: 0;
+  width: 32px;
+  background: linear-gradient(to left, #2b2b34, #141418);
+  border-left: 2px solid #474754;
+  z-index: 10;
+}
+
+/* 6x6 Ground Glass Screen */
+.ground-glass-screen {
+  width: 250px;
+  height: 250px;
+  background: #000;
+  border: 2px solid #33333d;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.9);
+}
+
+/* Hasselblad Classic Focusing Grid Lines */
+.grid-crosshairs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    linear-gradient(to right, transparent 33.3%, rgba(255,255,255,0.2) 33.3%, rgba(255,255,255,0.2) 33.7%, transparent 33.7%, transparent 66.6%, rgba(255,255,255,0.2) 66.6%, rgba(255,255,255,0.2) 67%, transparent 67%),
+    linear-gradient(to bottom, transparent 33.3%, rgba(255,255,255,0.2) 33.3%, rgba(255,255,255,0.2) 33.7%, transparent 33.7%, transparent 66.6%, rgba(255,255,255,0.2) 66.6%, rgba(255,255,255,0.2) 67%, transparent 67%);
+}
+
+.grid-crosshairs::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  font-weight: 300;
+}
+
+/* Viewfinder Vignette */
+.viewfinder-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.45) 100%);
+  pointer-events: none;
+}
+
+/* Classic Chrome Shutter Button */
+.classic-shutter-button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f4f4f5 0%, #a1a1aa 70%, #52525b 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 
+    0 8px 18px rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, filter 0.15s ease;
+}
+
+.classic-shutter-button:hover {
   filter: brightness(1.15);
 }
 
-.shutter-907x-btn:active {
+.classic-shutter-button:active {
   transform: scale(0.92);
 }
 
-/* PIP Mini-Map Crop Box Animation */
-#pip-red-box {
-  transition: all 0.2s ease-out;
+.shutter-inner-metal {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #71717a 0%, #27272a 100%);
+  border: 1px solid #a1a1aa;
 }
 
-/* Active buttons */
-.active-scene {
-  background-color: var(--hb-orange) !important;
-  color: #000 !important;
-  font-weight: 700 !important;
-}
-
-/* OpenSeadragon Container */
-.openseadragon-container {
-  outline: none !important;
+/* Film Card Frame */
+.film-border-card {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
 }
