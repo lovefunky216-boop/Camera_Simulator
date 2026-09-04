@@ -1,0 +1,8 @@
+.git/
+.github/
+*.md
+.gitignore
+wrangler.jsonc
+wrangler.toml
+package.json
+package-lock.json

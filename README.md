@@ -60,9 +60,26 @@ python -m http.server 8000
 
 ---
 
+## ☁️ Cloudflare Workers 자동 배포 (CI/CD)
+
+Cloudflare Workers의 **Static Assets** 기능과 GitHub이 연동되어 있어, `git push`를 하면 자동으로 빌드 및 글로벌 엣지 CDN에 반영됩니다.
+
+### 방법 1: Cloudflare 대시보드에서 Git 연동 (가장 간편한 방법)
+1. [Cloudflare Workers Deployments 페이지](https://dash.cloudflare.com/a2ac61f5f73089be223a143af71ad7d4/workers/services/view/camera-simulator/production/deployments)로 이동합니다.
+2. 상단 메뉴의 **Settings** > **Builds** (또는 **Connect to Git**)를 클릭합니다.
+3. GitHub 계정을 연결하고 `lovefunky216-boop/Camera_Simulator` 저장소를 선택합니다.
+4. **Deploy**를 클릭하면 완료! 이후 `git push` 시마다 Cloudflare가 자동으로 빌드 & 배포합니다.
+
+### 방법 2: GitHub Actions 워크플로우 활용
+1. 본 저장소의 **Settings** > **Secrets and variables** > **Actions**로 이동합니다.
+2. `CLOUDFLARE_API_TOKEN` 시크릿을 생성하고 발급받은 Cloudflare API 토큰을 입력합니다.
+3. 이제 `main` 브랜치에 코드를 올리면 `.github/workflows/deploy.yml`이 실행되어 자동으로 배포됩니다.
+
+---
+
 ## 🌐 GitHub Pages 무료 웹 배포 방법
 
-이 프로젝트를 웹 링크로 누구나 접속할 수 있게 하려면:
+이 프로젝트를 GitHub Pages로도 동시에 호스팅할 수 있습니다:
 1. GitHub 저장소(`Camera_Simulator`)의 **Settings** 탭으로 이동합니다.
 2. 좌측 메뉴의 **Pages**를 클릭합니다.
 3. **Build and deployment** > **Branch**에서 `main` 브랜치 / `/(root)`를 선택하고 **Save**를 누릅니다.
