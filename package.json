@@ -1,12 +1,12 @@
 {
   "name": "camera-simulator",
   "version": "1.0.0",
-  "description": "Hasselblad 100MP Virtual Camera Experience",
+  "description": "Hasselblad 907X & CFV 100C Virtual Shooting Experience",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "wrangler": "^3.100.0"
+    "wrangler": "^4.0.0"
   }
 }

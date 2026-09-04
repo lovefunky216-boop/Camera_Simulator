@@ -4,6 +4,5 @@ account_id = "a2ac61f5f73089be223a143af71ad7d4"
 
 [assets]
 directory = "./"
-binding = "ASSETS"
 html_handling = "auto-trailing-slash"
 not_found_handling = "single-page-application"
