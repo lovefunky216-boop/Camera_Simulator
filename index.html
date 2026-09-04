@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hasselblad 907X & CFV 100C Virtual Experience | 핫셀블라드 실감 촬영 시뮬레이터</title>
-  <meta name="description" content="핫셀블라드 907X / 500C 카메라 본체를 직접 들고, 웨이스트 레벨 틸트 화면으로 피사체를 조준하여 찰칵 찍어보는 1인칭 실감 시뮬레이터">
+  <title>Hasselblad 100MP Shorts Experience | 핫셀블라드 1억 화소 쇼츠 시뮬레이터</title>
+  <meta name="description" content="유튜브 쇼츠처럼 전체 풍경을 보고, 핫셀블라드 카메라로 찰칵 찍어 1억 화소 전체 사진과 극한의 딥 줌 디테일을 체감하는 인터랙티브 시뮬레이터">
 
-  <!-- Tailwind CSS & Three.js CDN -->
+  <!-- Tailwind CSS & OpenSeadragon CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 select-none">
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 select-none bg-[#09090b] text-zinc-100">
 
-  <!-- 1. 헤더: 브랜드, 시점 탭 & 카메라 모델 선택 -->
+  <!-- 1. 헤더: 브랜드 및 씬 선택 -->
   <header class="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 py-2 border-b border-zinc-800/80 mb-3">
     <!-- 브랜드 로고 -->
     <div class="flex items-center gap-3">
@@ -25,243 +24,177 @@
       </div>
       <div>
         <h1 class="text-base md:text-lg font-extrabold tracking-[0.2em] text-white flex items-center gap-2">
-          HASSELBLAD <span id="camera-model-badge" class="text-[10px] font-normal px-2 py-0.5 bg-zinc-800 text-[#ff8e3d] rounded border border-zinc-700">907X & CFV 100C</span>
+          HASSELBLAD <span class="text-[10px] font-normal px-2 py-0.5 bg-zinc-800 text-[#ff8e3d] rounded border border-zinc-700">907X & CFV 100C</span>
         </h1>
-        <p class="text-[11px] text-zinc-500 tracking-wider">SWEDISH MEDIUM FORMAT SHOOTING SIMULATOR 🇸🇪</p>
+        <p class="text-[11px] text-zinc-500 tracking-wider">100MP YOUTUBE SHORTS CINEMATIC SIMULATOR 🇸🇪</p>
       </div>
     </div>
 
-    <!-- 시점 모드 탭 (1인칭 POV 촬영 vs 3D 카메라 외형 스튜디오) -->
+    <!-- 씬 선택 탭 -->
     <div class="flex items-center bg-zinc-900/90 p-1 rounded-xl border border-zinc-800 text-xs">
-      <button id="tab-mode-pov" class="active-tab px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1.5">
-        <span>📷</span>
-        <span>1인칭 촬영 (POV)</span>
+      <button data-scene="duomo" class="active-scene px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium transition">
+        🏛️ 피렌체 두오모 (142MP)
       </button>
-      <button id="tab-mode-3d" class="px-3.5 py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium transition flex items-center gap-1.5">
-        <span>🧊</span>
-        <span>3D 카메라 외형</span>
+      <button data-scene="highsmith" class="px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium transition">
+        🏛️ 대전당 돔 (65MP)
       </button>
     </div>
 
-    <!-- 우측 글로벌 액션 (사운드, 기종 전환, 위시리스트) -->
+    <!-- 우측 사운드 & 위시리스트 -->
     <div class="flex items-center gap-2">
-      <!-- 카메라 기종 선택 버튼 -->
-      <div class="flex items-center bg-zinc-900 p-1 rounded-lg border border-zinc-800 text-[11px]">
-        <button data-model="907x" class="active-model px-2.5 py-1 rounded text-zinc-400">907X</button>
-        <button data-model="500c" class="px-2.5 py-1 rounded text-zinc-400">500C/M</button>
-      </div>
-
       <button id="sound-toggle-btn" class="p-1.5 px-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-[#ff6a00] hover:bg-zinc-800 text-xs transition">
         🔊 소리
       </button>
-
-      <button id="wishlist-open-btn" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-600/20 to-[#ff6a00]/20 border border-[#ff6a00]/40 text-[#ff8e3d] hover:brightness-125 text-xs font-semibold transition flex items-center gap-1 shadow">
+      <button id="wishlist-open-btn" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-600/20 to-[#ff6a00]/20 border border-[#ff6a00]/40 text-[#ff8e3d] hover:brightness-125 text-xs font-semibold transition flex items-center gap-1 shadow">
         <span>🇸🇪</span>
         <span class="hidden md:inline">Dear Hasselblad</span>
       </button>
     </div>
   </header>
 
-  <!-- 2. 메인 카메라 스테이지 영역 -->
+  <!-- 2. 쇼츠 메인 시네마틱 스테이지 (풍경 ➔ 카메라 조준 ➔ 셔터 찰칵 ➔ 1억 화소 전체 ➔ 딥 줌) -->
   <main class="w-full max-w-5xl mx-auto flex flex-col items-center gap-3 flex-grow">
 
-    <!-- ============================================================
-         STAGE A: 1인칭 웨이스트 레벨 POV 촬영 모드 (쇼츠 영상 감성)
-         ============================================================ -->
-    <div id="pov-camera-stage" class="relative">
+    <!-- 상단 쇼츠 단계 알림 배너 -->
+    <div class="w-full max-w-[960px] bg-zinc-900/90 border border-zinc-800 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs font-mono-cam shadow-lg">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#ff6a00] animate-ping"></span>
+        <div>
+          <h3 id="shorts-step-banner" class="font-bold text-white tracking-wide">
+            STEP 1: 전체 풍경을 핫셀블라드 틸트 화면으로 조준 중
+          </h3>
+          <p id="shorts-step-sub" class="text-[11px] text-zinc-400">
+            오렌지 셔터 버튼을 눌러 1억 화소 사진을 찰칵 찍어보세요!
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="sensor-crop-badge" class="hidden bg-[#ff6a00] text-black font-extrabold px-2 py-0.5 rounded text-[10px] shadow">
+          1:1 픽셀 크롭
+        </span>
+        <span class="text-zinc-400">ZOOM: <span id="hud-zoom-pct" class="text-white font-bold">100%</span></span>
+      </div>
+    </div>
+
+    <!-- 메인 뷰포트 (16:10 / 4:3 비율의 대형 뷰어) -->
+    <div id="shorts-main-stage" class="relative w-full max-w-[960px] aspect-[4/3] md:aspect-[16/10] bg-[#070709] rounded-2xl border-4 border-[#23232c] shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col justify-end items-center">
       
-      <!-- 상단 힌트 배너 -->
-      <div class="absolute top-4 inset-x-6 flex items-center justify-between text-xs text-zinc-400 font-mono-cam z-30 pointer-events-none">
-        <div class="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>마우스로 카메라를 들고 움직여 피사체를 조준하세요</span>
-        </div>
-        <div class="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
-          <span>마우스 휠: 렌즈 수동 초점 조절 (MF)</span>
-        </div>
-      </div>
+      <!-- 레이어 1: 초고해상도 원본 풍경 / 딥줌 엔진 (OpenSeadragon) -->
+      <div id="osd-full-viewer" class="absolute inset-0 z-0 bg-[#0c0c0e]"></div>
 
-      <!-- 플래시 & 암전 셔터 이펙트 -->
-      <div id="pov-flash-layer" class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-75 z-40"></div>
-      <div id="pov-blackout-layer" class="absolute inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-150 z-40"></div>
+      <!-- 플래시 & 암전 셔터 애니메이션 레이어 -->
+      <div id="shorts-flash" class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-75 z-40"></div>
+      <div id="shorts-blackout" class="absolute inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-150 z-40"></div>
 
-      <!-- 1인칭 촬영 완료 후 사진 리뷰 배너 -->
-      <div id="pov-review-banner" class="hidden absolute top-16 inset-x-8 bg-black/85 backdrop-blur-md border border-[#ff6a00]/50 rounded-2xl p-3 z-30 flex items-center justify-between shadow-2xl">
-        <div class="flex items-center gap-3">
-          <div class="w-3 h-3 rounded-full bg-[#ff6a00] animate-pulse"></div>
-          <div>
-            <h4 class="text-sm font-bold text-white tracking-wide">100MP 사진 촬영 완료! (리뷰 모드)</h4>
-            <p class="text-xs text-zinc-400">틸트 화면 속 방금 찍힌 사진을 확인하거나 액자 카드로 저장하세요.</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="pov-save-card-btn" class="px-3.5 py-1.5 rounded-xl bg-[#ff6a00] hover:bg-[#ff7a1a] text-black text-xs font-bold transition shadow">
-            💾 EXIF 카드 저장
-          </button>
-          <button id="pov-return-live-btn" class="px-3.5 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold transition">
-            ↺ 다시 촬영
-          </button>
-        </div>
-      </div>
-
-      <!-- 카메라 본체를 쥐고 있는 손 & 907X 본체 프레임 -->
-      <div id="pov-camera-body" class="pov-body-907x relative flex flex-col items-center justify-end">
-
-        <!-- 500C/M 모드일 때 나타나는 접이식 메탈 후드 -->
-        <div id="pov-500c-hood" class="hidden">
-          <div class="hood-leaf-top"></div>
-          <div class="hood-leaf-left"></div>
-          <div class="hood-leaf-right"></div>
-        </div>
-
-        <!-- 핫셀블라드 크롬 엣지 베젤 외곽선 -->
-        <div class="pov-chrome-bezel"></div>
-
-        <!-- 전면 살짝 보이는 XCD 렌즈 경통 실루엣 -->
-        <div class="absolute -top-12 inset-x-12 h-14 bg-gradient-to-b from-zinc-700 via-zinc-900 to-black rounded-t-full border-t-2 border-zinc-400 flex items-center justify-center text-[10px] font-mono-cam text-zinc-400 z-0">
-          <span>XCD 2.5/38V · FOCUS DIST: <span id="hud-focus-val" class="text-white font-bold">1.5m</span></span>
-        </div>
-
-        <!-- 40도 틸트 터치 LCD 화면 하우징 -->
-        <div class="pov-screen-housing relative flex flex-col">
-
-          <!-- 뷰파인더 상단 HUD 정보 바 -->
-          <div class="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-black/85 to-transparent z-20 flex items-center justify-between px-3 text-[10px] font-mono-cam text-zinc-300">
+      <!-- 레이어 2: [STEP 1 & 2] 전면에 배치된 핫셀블라드 907X & CFV 100C 카메라 바디 (셔터 누르면 슥 내려감) -->
+      <div id="camera-front-rig" class="relative z-20 flex flex-col items-center justify-end transition-all duration-700 ease-out mb-2 md:mb-4">
+        
+        <!-- 카메라 본체 & 40도 틸트 LCD 스크린 -->
+        <div class="relative w-[340px] md:w-[420px] aspect-[4/3] bg-[#121216] rounded-2xl border-4 border-[#d4d4dc] shadow-[0_20px_50px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-2">
+          
+          <!-- 상단 틸트 LCD 정보 바 -->
+          <div class="h-6 bg-gradient-to-b from-black/90 to-transparent z-20 flex items-center justify-between px-3 text-[9px] font-mono-cam text-zinc-300">
             <div class="flex items-center gap-2">
               <span class="text-[#ff6a00] font-bold">100M</span>
               <span class="text-zinc-400">16-BIT RAW</span>
-              <span class="bg-zinc-800/80 px-1.5 py-0.5 rounded text-[9px]">HNCS</span>
             </div>
-            <div class="flex items-center gap-3">
-              <span>BAT 98%</span>
-              <span class="text-emerald-400">SSD: 9999+</span>
+            <span class="text-emerald-400">CFV 100C</span>
+          </div>
+
+          <!-- 틸트 LCD 스크린 (풍경이 실시간으로 비침) -->
+          <div class="relative flex-1 bg-black rounded-lg overflow-hidden border border-zinc-700">
+            <canvas id="tilt-lcd-canvas" width="400" height="280" class="w-full h-full object-cover"></canvas>
+            <!-- 3x3 가이드선 -->
+            <div class="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 border border-white/10">
+              <div class="border-r border-b border-white/10"></div>
+              <div class="border-r border-b border-white/10"></div>
+              <div class="border-b border-white/10"></div>
+              <div class="border-r border-b border-white/10"></div>
+              <div class="border-r border-b border-white/10"></div>
+              <div class="border-b border-white/10"></div>
+              <div class="border-r border-b border-white/10"></div>
+              <div class="border-r border-b border-white/10"></div>
+              <div></div>
             </div>
           </div>
 
-          <!-- 실제 렌더링되는 뷰파인더 캔버스 (피사체 & 포커스) -->
-          <canvas id="pov-viewfinder-canvas" width="720" height="540" class="w-full h-full object-cover"></canvas>
-
-          <!-- 뷰파인더 하단 노출 HUD 정보 바 -->
-          <div class="absolute bottom-0 inset-x-0 h-8 bg-gradient-to-t from-black/90 to-transparent z-20 flex items-center justify-around px-4 text-xs font-mono-cam text-white font-semibold">
+          <!-- 하단 노출 HUD -->
+          <div class="h-6 bg-gradient-to-t from-black/90 to-transparent z-20 flex items-center justify-around px-2 text-[10px] font-mono-cam text-white">
             <span>f/2.5</span>
             <span>1/250s</span>
             <span class="text-[#ff6a00]">ISO 64</span>
             <span class="text-zinc-400">±0.0</span>
           </div>
-
-          <!-- 핫셀블라드 브랜드 로고 인쇄 -->
-          <div class="absolute bottom-0.5 inset-x-0 flex justify-center text-[8px] tracking-[0.3em] font-extrabold text-zinc-500 z-20 pointer-events-none">
-            HASSELBLAD
-          </div>
         </div>
 
-        <!-- 바디 우측: 아이코닉 핫셀블라드 오렌지 셔터 버튼 -->
-        <div class="absolute -right-10 bottom-6 flex flex-col items-center gap-1 z-30">
-          <button id="pov-shutter-btn" class="shutter-907x-btn" title="찰칵! 셔터 누르기 (스페이스바)">
+        <!-- 바디 우측: 눈에 띄는 오렌지 셔터 릴리즈 버튼 -->
+        <div class="absolute -right-6 md:-right-10 bottom-4 flex flex-col items-center gap-1 z-30">
+          <button id="shorts-shutter-btn" class="shutter-907x-btn animate-bounce" title="찰칵! 셔터 누르기 (스페이스바)">
             <div class="shutter-907x-inner text-white">
-              <span class="font-extrabold text-base">H</span>
-              <span class="text-[7px] font-black uppercase tracking-wider">SHUTTER</span>
+              <span class="font-extrabold text-sm md:text-base">H</span>
+              <span class="text-[7px] md:text-[8px] font-black uppercase tracking-wider">SHUTTER</span>
             </div>
           </button>
-          <span class="text-[9px] text-zinc-400 font-mono tracking-wider">찰칵!</span>
+          <span class="text-[9px] md:text-[10px] text-white bg-black/70 px-2 py-0.5 rounded-full font-mono font-bold tracking-wider">찰칵! 누르기</span>
         </div>
 
       </div>
 
-      <!-- 카메라를 잡고 있는 두 손의 분위기 섀도우 -->
-      <div class="hands-overlay"></div>
-
-    </div>
-
-    <!-- ============================================================
-         STAGE B: 3D 카메라 외형 인터랙티브 스튜디오 (Three.js)
-         ============================================================ -->
-    <div id="studio-3d-stage" class="hidden relative">
-      <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs text-zinc-300 font-mono-cam z-20 pointer-events-none">
-        마우스로 카메라를 360° 자유롭게 돌려보세요
+      <!-- 레이어 3: [STEP 4 & 5] 극한 딥 줌 시 나타나는 디테일 자막 오버레이 -->
+      <div id="zoom-reveal-overlay" class="opacity-0 pointer-events-none transition-all duration-500 absolute top-4 left-4 z-20 bg-black/85 backdrop-blur-md border border-[#ff6a00]/50 rounded-2xl p-3.5 max-w-sm shadow-2xl">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#ff6a00] animate-pulse"></span>
+          <span class="text-[10px] font-mono-cam text-[#ff6a00] font-bold uppercase">100% 1:1 SENSOR PIXEL CROP</span>
+        </div>
+        <h4 id="reveal-title" class="text-sm font-bold text-white tracking-wide">114미터 상공 돔 랜턴의 구리 리벳</h4>
+        <p id="reveal-desc" class="text-xs text-zinc-300 mt-1 leading-relaxed">수백 미터 밖 꼭대기의 리벳과 금박 질감까지 1:1 픽셀로 선명하게 포착되었습니다.</p>
       </div>
-    </div>
 
-    <!-- 3D 스튜디오 전용 틸트 각도 조절 바 -->
-    <div id="studio-3d-controls" class="hidden w-full max-w-[960px] bg-zinc-900/90 border border-zinc-800 rounded-xl p-3 flex items-center justify-between gap-4 text-xs">
-      <div class="flex items-center gap-3 flex-1">
-        <span class="text-zinc-400 font-mono-cam">스크린 틸트 각도:</span>
-        <input type="range" id="tilt-angle-slider" min="0" max="90" value="40" class="flex-1">
-        <span id="tilt-angle-text" class="text-[#ff6a00] font-bold font-mono-cam w-10">40°</span>
-      </div>
-      <div class="flex items-center gap-1.5">
-        <button data-preset-tilt="0" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300">0° 접힘</button>
-        <button data-preset-tilt="40" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300">40° 웨이스트 레벨</button>
-        <button data-preset-tilt="90" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300">90° 탑다운</button>
-      </div>
-    </div>
-
-    <!-- ============================================================
-         3. 물리 컨트롤 데크: 피사체 씬, 수동 초점 링, 화면비
-         ============================================================ -->
-    <div class="w-full max-w-[960px] bg-[#15151a] rounded-2xl border border-zinc-800 p-4 shadow-xl flex flex-col md:flex-row items-center justify-between gap-5">
-      
-      <!-- 좌측: 피사체 환경 씬 선택 -->
-      <div class="flex flex-col gap-1.5 w-full md:w-auto">
-        <span class="text-[10px] text-zinc-500 font-mono-cam tracking-wider">피사체 환경 선택</span>
-        <div class="flex items-center gap-1.5 bg-zinc-900/90 p-1 rounded-xl border border-zinc-800 text-xs">
-          <button data-scene="temple" class="active-scene flex-1 md:flex-initial px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition">
-            🏛️ 신전 회랑
-          </button>
-          <button data-scene="street" class="flex-1 md:flex-initial px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition">
-            🌆 골든아워 거리
-          </button>
-          <button data-scene="studio" class="flex-1 md:flex-initial px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition">
-            🎨 스튜디오
-          </button>
-          <button data-scene="webcam" class="flex-1 md:flex-initial px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition border border-emerald-500/40 text-emerald-400">
-            📹 웹캠 라이브
-          </button>
+      <!-- 레이어 4: [쇼츠의 핵심!] 우측 하단 전체 사진 대비 크롭 위치를 보여주는 PIP 미니맵 -->
+      <div id="pip-minimap-container" class="hidden absolute bottom-4 right-4 z-20 w-[180px] h-[135px] bg-black/90 border-2 border-[#ff6a00] rounded-xl overflow-hidden shadow-2xl">
+        <!-- 씬 전체 썸네일 -->
+        <img id="pip-thumb-img" src="https://openseadragon.github.io/example-images/duomo/duomo.dzi" alt="Full scene" class="w-full h-full object-cover opacity-60">
+        <!-- 빨간색 줌인 크롭 영역 박스 -->
+        <div id="pip-red-box" class="absolute border-2 border-red-500 bg-red-500/20 shadow-lg pointer-events-none"></div>
+        <div class="absolute bottom-0 inset-x-0 bg-black/80 text-[8px] font-mono-cam text-[#ff6a00] text-center py-0.5">
+          100MP MACRO CROP
         </div>
       </div>
 
-      <!-- 중앙: 렌즈 수동 포커스 링 (MF Focus Slider) -->
-      <div class="flex flex-col gap-1.5 w-full md:w-64">
-        <div class="flex items-center justify-between text-xs font-mono-cam">
-          <span class="text-zinc-500 text-[10px]">LENS MANUAL FOCUS</span>
-          <button id="toggle-peaking-btn" class="text-[10px] px-1.5 py-0.5 rounded border border-[#ff6a00] text-[#ff6a00]">
-            PEAKING ON
-          </button>
+      <!-- 하단 메타데이터 바 (촬영 후 전체 사진 모드일 때 표시) -->
+      <div class="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-black/95 to-transparent z-10 flex items-center justify-between px-5 text-xs font-mono-cam text-zinc-400 pointer-events-none">
+        <div>
+          <span class="text-white font-bold">HASSELBLAD CFV 100C</span>
+          <span class="hidden sm:inline text-zinc-500"> · XCD 38V · 16-BIT HNCS</span>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="text-xs text-zinc-500">근거리</span>
-          <input type="range" id="focus-slider" min="0" max="100" value="70" class="flex-1">
-          <span class="text-xs text-zinc-500">무한대</span>
-        </div>
-      </div>
-
-      <!-- 우측: 포맷 화면비 (4:3 중형 / 1:1 스퀘어 / 65:24 XPan) -->
-      <div class="flex flex-col gap-1.5 w-full md:w-auto">
-        <span class="text-[10px] text-zinc-500 font-mono-cam tracking-wider">센서 비율 / 마스크</span>
-        <div class="flex items-center gap-1.5 bg-zinc-900/90 p-1 rounded-xl border border-zinc-800 text-xs">
-          <button data-aspect="4-3" class="active-aspect px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition">
-            4:3 중형
-          </button>
-          <button data-aspect="1-1" class="px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition">
-            1:1 정방형
-          </button>
-          <button data-aspect="xpan" class="px-3 py-1.5 rounded-lg text-zinc-400 font-bold text-[#ff6a00] hover:text-white transition">
-            65:24 XPAN
-          </button>
+        <div>
+          <span class="text-[#ff6a00] font-bold">142,000,000 PIXELS</span>
         </div>
       </div>
 
     </div>
 
-    <!-- 하단 퀵 가이드 -->
-    <div class="text-xs text-zinc-500 text-center flex flex-wrap items-center justify-center gap-3 font-mono-cam">
-      <span>[Space]: 찰칵! 셔터 누르기</span>
-      <span>•</span>
-      <span>[F]: 원터치 자동 초점</span>
-      <span>•</span>
-      <span>[M]: 907X ↔ 500C 기종 변경</span>
-      <span>•</span>
-      <span>화면 드래그: 피사체 둘러보기</span>
+    <!-- 3. 촬영 후 하단 컨트롤 덱 (다시 촬영 / 카드 다운로드 / 자유 탐색) -->
+    <div id="post-shot-controls" class="hidden w-full max-w-[960px] bg-[#15151a] rounded-2xl border border-zinc-800 p-4 shadow-xl flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <button id="reshoot-btn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#ff6a00] to-[#d65100] text-black font-extrabold text-xs transition flex items-center gap-2 shadow-lg hover:brightness-110">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          <span>↺ 다른 장소에서 또 찍기 (처음으로)</span>
+        </button>
+
+        <button id="download-shorts-card-btn" class="px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition flex items-center gap-2 border border-zinc-700">
+          <svg class="w-4 h-4 text-[#ff6a00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+          <span>쇼츠 스타일 사진 카드 저장</span>
+        </button>
+      </div>
+
+      <div class="text-xs text-zinc-400 font-mono-cam flex items-center gap-2">
+        <span>💡 마우스 휠로 다른 곳도 자유롭게 무한 딥 줌 탐색 가능</span>
+      </div>
     </div>
 
   </main>
@@ -282,7 +215,7 @@
           "천만원이 넘는 핫셀블라드 907X & CFV 100C... 평생 손에 쥐어볼 수 있을까?"
         </p>
         <p class="text-zinc-400 text-xs">
-          유튜브 쇼츠에서 보던 그 설레는 웨이스트 레벨 틸트 화면과 묵직한 리프 셔터의 손맛을 가상으로라도 완벽하게 체감할 수 있도록 정성껏 제작했습니다.
+          유튜브 쇼츠에서 보던 그 설레는 전체 풍경 ➔ 핫셀블라드 찰칵 ➔ 1억 화소 극한 줌인 손맛을 가상으로라도 완벽하게 체감할 수 있도록 정성껏 제작했습니다.
         </p>
         <div class="bg-black/60 p-3.5 rounded-xl border border-zinc-800 text-xs text-zinc-300 space-y-1 font-mono">
           <p class="text-[#ff6a00] font-bold">To: Hasselblad Headquarters (Gothenburg, Sweden)</p>
@@ -291,7 +224,7 @@
       </div>
 
       <div class="flex items-center justify-between pt-3 border-t border-zinc-800">
-        <a href="https://twitter.com/intent/tweet?text=%ED%95%AB%EC%85%80%EB%B8%94%EB%9D%BC%EB%93%9C%20907X%20%26%20CFV%20100C%20%EA%B0%80%EC%83%81%20%EC%B9%B4%EB%A9%94%EB%9D%BC%20%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%ED%84%B0!%20%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8%20%EB%A0%88%EB%B2%A8%20%ED%8B%B8%ED%8A%B8%20%ED%99%94%EB%A9%B4%EC%9C%BC%EB%A1%9C%20%EC%A1%B0%EC%A4%80%ED%95%98%EA%B3%A0%20%EC%B0%B0%EC%B9%B5%20%EC%B0%8D%EB%8A%94%20%EC%86%90%EB%A7%9B%EC%9D%B4%20%EC%A7%84%EC%A7%9C%EB%8B%A4%E2%80%A6%20%40Hasselblad%20%23Hasselblad100MP%20%23GiveMeHasselblad" target="_blank" class="px-4 py-2 rounded-xl bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white text-xs font-bold transition flex items-center gap-2">
+        <a href="https://twitter.com/intent/tweet?text=%ED%95%AB%EC%85%80%EB%B8%94%EB%9D%BC%EB%93%9C%201%EC%96%B5%20%ED%99%94%EC%86%8C%20%EC%87%BC%EC%B8%A0%20%EC%B2%B4%ED%97%98%20%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%ED%84%B0!%20%EC%A0%84%EC%B2%B4%20%ED%92%8D%EA%B2%BD%EC%97%90%EC%84%9C%20%EC%B0%B0%EC%B9%B5%20%EC%B0%8D%EA%B3%A0%20%EB%94%A5%20%EC%A4%8C%ED%95%98%EB%8A%94%20%EB%AF%B8%EC%B9%9C%20%ED%95%B4%EC%83%81%EB%A0%A5%E2%80%A6%20%40Hasselblad%20%23Hasselblad100MP%20%23GiveMeHasselblad" target="_blank" class="px-4 py-2 rounded-xl bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white text-xs font-bold transition flex items-center gap-2">
           <span>𝕏 / 트위터에 공유</span>
         </a>
         <button onclick="navigator.clipboard.writeText(window.location.href); alert('웹사이트 주소가 복사되었습니다!');" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold transition">
@@ -303,14 +236,38 @@
 
   <!-- 푸터 -->
   <footer class="w-full max-w-5xl mx-auto text-center py-2 text-[11px] text-zinc-600 border-t border-zinc-900 mt-3 font-mono-cam">
-    <p>Hasselblad 907X & CFV 100C Interactive Shooting Simulator · Built with Three.js & Web Audio API</p>
+    <p>Hasselblad 100MP Shorts Cinematic Experience · Powered by OpenSeadragon & Web Audio API</p>
   </footer>
 
   <!-- Scripts -->
   <script src="js/audio.js"></script>
-  <script src="js/camera3d.js"></script>
-  <script src="js/pov.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/shorts_engine.js"></script>
+
+  <script>
+    // Wishlist modal toggle
+    const openWishlist = document.getElementById("wishlist-open-btn");
+    const closeWishlist = document.getElementById("wishlist-close-btn");
+    const wishlistModal = document.getElementById("wishlist-modal");
+
+    if (openWishlist && wishlistModal) {
+      openWishlist.onclick = () => wishlistModal.classList.remove("hidden");
+    }
+    if (closeWishlist && wishlistModal) {
+      closeWishlist.onclick = () => wishlistModal.classList.add("hidden");
+    }
+
+    // Sound toggle
+    const soundBtn = document.getElementById("sound-toggle-btn");
+    if (soundBtn) {
+      soundBtn.onclick = () => {
+        if (window.cameraAudio) {
+          window.cameraAudio.isMuted = !window.cameraAudio.isMuted;
+          soundBtn.classList.toggle("text-[#ff6a00]", !window.cameraAudio.isMuted);
+          soundBtn.classList.toggle("text-zinc-600", window.cameraAudio.isMuted);
+        }
+      };
+    }
+  </script>
 
 </body>
 </html>

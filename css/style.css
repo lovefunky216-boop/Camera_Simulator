@@ -1,19 +1,15 @@
 /* ============================================================
-   Hasselblad 907X & CFV 100C Realistic Camera Styling
-   Swedish Minimalist Titanium, Chrome, Leatherette, & 3D Tilt HUD
+   Hasselblad 100MP YouTube Shorts Exact Flow Styling
    ============================================================ */
 
 :root {
   --hb-orange: #ff6a00;
   --hb-orange-dark: #d65100;
-  --hb-orange-glow: rgba(255, 106, 0, 0.4);
-  --hb-chrome: #e4e4eb;
-  --hb-metal: #18181c;
-  --hb-body: #0d0d10;
+  --hb-orange-light: #ff8e3d;
 }
 
 body {
-  background: radial-gradient(circle at 50% 15%, #1c1c22 0%, #0a0a0c 100%);
+  background: radial-gradient(circle at 50% 15%, #18181f 0%, #08080a 100%);
   color: #e4e4e7;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   user-select: none;
@@ -21,126 +17,23 @@ body {
   overflow-x: hidden;
 }
 
-/* Monospace Camera Font */
 .font-mono-cam {
-  font-family: "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  font-family: "SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 /* ============================================================
-   POV Waist-Level Shooting Rig (The Viral Shorts Experience)
+   Front Camera Rig (Hasselblad 907X held in front of scene)
    ============================================================ */
 
-#pov-camera-stage {
-  position: relative;
-  width: 100%;
-  max-width: 960px;
-  height: 640px;
-  background: radial-gradient(circle at 50% 30%, #2a2a34 0%, #0d0d11 90%);
-  border-radius: 24px;
-  border: 4px solid #23232c;
-  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  cursor: grab;
+#camera-front-rig {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
-#pov-camera-stage:active {
-  cursor: grabbing;
-}
-
-/* 907X Body Perspective Container */
-.pov-body-907x {
-  position: relative;
-  width: 520px;
-  height: 480px;
-  transform: perspective(850px) rotateX(24deg);
-  transform-origin: bottom center;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* 500C/M Body Perspective Container */
-.pov-body-500c {
-  position: relative;
-  width: 520px;
-  height: 480px;
-  transform: perspective(850px) rotateX(16deg);
-  transform-origin: bottom center;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Chrome Bezel Outer Rim */
-.pov-chrome-bezel {
-  position: absolute;
-  inset: -6px;
-  border: 4px solid #d4d4dc;
-  border-radius: 20px;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.9),
-    inset 0 2px 4px rgba(255, 255, 255, 0.6),
-    inset 0 -3px 6px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
-  z-index: 20;
-}
-
-/* LCD Screen Housing */
-.pov-screen-housing {
-  position: relative;
-  width: 440px;
-  height: 330px;
-  background: #000;
-  border-radius: 12px;
-  border: 2px solid #2e2e38;
-  overflow: hidden;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.95), 0 8px 24px rgba(0,0,0,0.8);
-  z-index: 10;
-}
-
-/* 500C/M Folding Metal Hood Leaves */
-#pov-500c-hood {
-  position: absolute;
-  inset: -20px;
-  pointer-events: none;
-  z-index: 25;
-}
-
-.hood-leaf-top {
-  position: absolute;
-  top: 0;
-  left: 20px;
-  right: 20px;
-  height: 45px;
-  background: linear-gradient(to bottom, #18181c, #0d0d10);
-  border-bottom: 2px solid #3f3f46;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.8);
-}
-
-.hood-leaf-left {
-  position: absolute;
-  top: 20px;
-  bottom: 20px;
-  left: 0;
-  width: 45px;
-  background: linear-gradient(to right, #18181c, #0d0d10);
-  border-right: 2px solid #3f3f46;
-}
-
-.hood-leaf-right {
-  position: absolute;
-  top: 20px;
-  bottom: 20px;
-  right: 0;
-  width: 45px;
-  background: linear-gradient(to left, #18181c, #0d0d10);
-  border-left: 2px solid #3f3f46;
-}
-
-/* 907X Tactile Shutter Release Button */
+/* 907X Shutter Button */
 .shutter-907x-btn {
-  width: 68px;
-  height: 68px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: radial-gradient(circle, #383842 0%, #1e1e24 70%, #141418 100%);
   padding: 5px;
@@ -170,83 +63,26 @@ body {
 }
 
 .shutter-907x-btn:hover {
-  filter: brightness(1.12);
+  filter: brightness(1.15);
 }
 
 .shutter-907x-btn:active {
   transform: scale(0.92);
 }
 
-/* 500C Classic Chrome Button */
-.shutter-500c-btn {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 50%, #52525b 100%);
-  padding: 6px;
-  border: 2px solid #fff;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.8);
-  cursor: pointer;
+/* PIP Mini-Map Crop Box Animation */
+#pip-red-box {
+  transition: all 0.2s ease-out;
 }
 
-/* Handheld Hands Silhouette / Arm Overlay */
-.hands-overlay {
-  position: absolute;
-  bottom: -40px;
-  inset-x: 0;
-  height: 280px;
-  background: radial-gradient(ellipse at 50% 120%, rgba(20, 20, 26, 0.95) 40%, transparent 80%);
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* ============================================================
-   3D Studio Stage Container
-   ============================================================ */
-
-#studio-3d-stage {
-  position: relative;
-  width: 100%;
-  max-width: 960px;
-  height: 640px;
-  background: radial-gradient(circle at 50% 30%, #202028 0%, #0c0c0f 100%);
-  border-radius: 24px;
-  border: 4px solid #23232c;
-  overflow: hidden;
-  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9);
-}
-
-/* Active Tabs & Buttons */
-.active-tab {
-  background: var(--hb-orange) !important;
-  color: #000 !important;
-  font-weight: 800 !important;
-}
-
-.active-model, .active-scene, .active-aspect {
+/* Active buttons */
+.active-scene {
   background-color: var(--hb-orange) !important;
   color: #000 !important;
   font-weight: 700 !important;
-  border-color: var(--hb-orange) !important;
 }
 
-/* Custom Styled Range Slider */
-input[type=range] {
-  -webkit-appearance: none;
-  height: 6px;
-  border-radius: 3px;
-  background: #27272a;
-  outline: none;
-}
-
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--hb-orange);
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-  border: 2px solid #fff;
+/* OpenSeadragon Container */
+.openseadragon-container {
+  outline: none !important;
 }
