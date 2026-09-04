@@ -1,16 +1,19 @@
-/* Hasselblad Iconic Industrial Style & Animations */
+/* ============================================================
+   Hasselblad 907X & CFV 100C Realistic Camera Styling
+   Swedish Minimalist Titanium, Chrome, Leatherette, & 3D Tilt HUD
+   ============================================================ */
 
 :root {
   --hb-orange: #ff6a00;
   --hb-orange-dark: #d65100;
-  --hb-orange-light: #ff8e3d;
-  --hb-dark-metal: #121214;
-  --hb-bezel: #1e1e24;
-  --hb-border: #2e2e38;
+  --hb-orange-glow: rgba(255, 106, 0, 0.4);
+  --hb-chrome: #e4e4eb;
+  --hb-metal: #18181c;
+  --hb-body: #0d0d10;
 }
 
 body {
-  background: radial-gradient(circle at 50% 20%, #1a1a1e 0%, #0d0d0f 100%);
+  background: radial-gradient(circle at 50% 15%, #1c1c22 0%, #0a0a0c 100%);
   color: #e4e4e7;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   user-select: none;
@@ -18,152 +21,232 @@ body {
   overflow-x: hidden;
 }
 
-/* Monospace & Digital font classes */
-.font-mono-camera {
-  font-family: "SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
+/* Monospace Camera Font */
+.font-mono-cam {
+  font-family: "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
 }
 
-/* Camera Body 3D Perspective & Tilt Support */
-#camera-viewfinder-frame {
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
-  will-change: transform;
-}
+/* ============================================================
+   POV Waist-Level Shooting Rig (The Viral Shorts Experience)
+   ============================================================ */
 
-/* Aspect Ratio Masks */
-#aspect-mask-container.aspect-4-3 .mask-top,
-#aspect-mask-container.aspect-4-3 .mask-bottom,
-#aspect-mask-container.aspect-4-3 .mask-left,
-#aspect-mask-container.aspect-4-3 .mask-right {
-  display: none;
-}
-
-/* 1:1 Square Medium Format Mask (Hasselblad 500C/M Tribute) */
-#aspect-mask-container.aspect-1-1 .mask-left,
-#aspect-mask-container.aspect-1-1 .mask-right {
-  display: block;
-  width: 12.5%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(2px);
-}
-
-/* 65:24 XPan Ultra-Wide Panoramic Mask */
-#aspect-mask-container.aspect-xpan .mask-top,
-#aspect-mask-container.aspect-xpan .mask-bottom {
-  display: block;
+#pov-camera-stage {
+  position: relative;
   width: 100%;
-  height: 25.5%;
-  background: rgba(0, 0, 0, 0.94);
-  backdrop-filter: blur(3px);
+  max-width: 960px;
+  height: 640px;
+  background: radial-gradient(circle at 50% 30%, #2a2a34 0%, #0d0d11 90%);
+  border-radius: 24px;
+  border: 4px solid #23232c;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: grab;
 }
 
-/* Autofocus Reticle Box */
-#af-reticle {
+#pov-camera-stage:active {
+  cursor: grabbing;
+}
+
+/* 907X Body Perspective Container */
+.pov-body-907x {
+  position: relative;
+  width: 520px;
+  height: 480px;
+  transform: perspective(850px) rotateX(24deg);
+  transform-origin: bottom center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 500C/M Body Perspective Container */
+.pov-body-500c {
+  position: relative;
+  width: 520px;
+  height: 480px;
+  transform: perspective(850px) rotateX(16deg);
+  transform-origin: bottom center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Chrome Bezel Outer Rim */
+.pov-chrome-bezel {
   position: absolute;
-  width: 56px;
-  height: 56px;
-  border: 1.5px solid var(--hb-orange);
-  transform: translate(-50%, -50%) scale(1.2);
+  inset: -6px;
+  border: 4px solid #d4d4dc;
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.9),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 20;
+}
+
+/* LCD Screen Housing */
+.pov-screen-housing {
+  position: relative;
+  width: 440px;
+  height: 330px;
+  background: #000;
+  border-radius: 12px;
+  border: 2px solid #2e2e38;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.95), 0 8px 24px rgba(0,0,0,0.8);
+  z-index: 10;
+}
+
+/* 500C/M Folding Metal Hood Leaves */
+#pov-500c-hood {
+  position: absolute;
+  inset: -20px;
+  pointer-events: none;
   z-index: 25;
 }
 
-#af-reticle::before {
-  content: "";
+.hood-leaf-top {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  background-color: var(--hb-orange);
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 45px;
+  background: linear-gradient(to bottom, #18181c, #0d0d10);
+  border-bottom: 2px solid #3f3f46;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.8);
+}
+
+.hood-leaf-left {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 0;
+  width: 45px;
+  background: linear-gradient(to right, #18181c, #0d0d10);
+  border-right: 2px solid #3f3f46;
+}
+
+.hood-leaf-right {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  right: 0;
+  width: 45px;
+  background: linear-gradient(to left, #18181c, #0d0d10);
+  border-left: 2px solid #3f3f46;
+}
+
+/* 907X Tactile Shutter Release Button */
+.shutter-907x-btn {
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-}
-
-#af-reticle.active {
-  border-color: #22c55e;
-}
-#af-reticle.active::before {
-  background-color: #22c55e;
-}
-
-/* Golden Ratio Grid lines */
-.grid-golden {
-  background: 
-    linear-gradient(to right, transparent 38.196%, rgba(255,255,255,0.12) 38.196%, rgba(255,255,255,0.12) 38.3%, transparent 38.3%, transparent 61.803%, rgba(255,255,255,0.12) 61.803%, rgba(255,255,255,0.12) 61.9%, transparent 61.9%),
-    linear-gradient(to bottom, transparent 38.196%, rgba(255,255,255,0.12) 38.196%, rgba(255,255,255,0.12) 38.3%, transparent 38.3%, transparent 61.803%, rgba(255,255,255,0.12) 61.803%, rgba(255,255,255,0.12) 61.9%, transparent 61.9%);
-}
-
-/* Focus Peaking Simulation Overlay */
-#peaking-overlay {
-  background: radial-gradient(circle at center, transparent 40%, rgba(255, 106, 0, 0.08) 100%);
-  box-shadow: inset 0 0 100px rgba(255, 106, 0, 0.25);
-  pointer-events: none;
-}
-
-/* Top OLED Sub-Display (X2D 100C style top display) */
-.top-oled-display {
-  background: #08090a;
-  border: 1px solid #232328;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.4);
-}
-
-/* Tactile Metal Knurled Shutter Button */
-.shutter-ring {
   background: radial-gradient(circle, #383842 0%, #1e1e24 70%, #141418 100%);
+  padding: 5px;
+  border: 2px solid #e4e4eb;
   box-shadow: 
-    0 10px 25px -5px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 2px 3px rgba(255, 255, 255, 0.2);
+    0 12px 25px -4px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 2px 3px rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.1s ease, filter 0.2s ease;
 }
 
-.shutter-inner {
-  background: linear-gradient(135deg, #ff7a1a 0%, #d65100 60%, #9e3600 100%);
+.shutter-907x-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7a1a 0%, #d65100 65%, #a33800 100%);
+  border: 1px solid #ff9d54;
   box-shadow: 
-    inset 0 2px 4px rgba(255, 255, 255, 0.4),
-    inset 0 -3px 6px rgba(0, 0, 0, 0.5),
-    0 4px 10px rgba(214, 81, 0, 0.4);
+    inset 0 2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(214, 81, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.shutter-inner:hover {
-  filter: brightness(1.1);
+.shutter-907x-btn:hover {
+  filter: brightness(1.12);
 }
 
-.shutter-inner:active {
+.shutter-907x-btn:active {
   transform: scale(0.92);
-  box-shadow: 
-    inset 0 3px 8px rgba(0, 0, 0, 0.7),
-    0 1px 3px rgba(214, 81, 0, 0.2);
 }
 
-/* Active Control States */
-.active-scene, .active-profile, .active-aspect, .active-tilt {
+/* 500C Classic Chrome Button */
+.shutter-500c-btn {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 50%, #52525b 100%);
+  padding: 6px;
+  border: 2px solid #fff;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.8);
+  cursor: pointer;
+}
+
+/* Handheld Hands Silhouette / Arm Overlay */
+.hands-overlay {
+  position: absolute;
+  bottom: -40px;
+  inset-x: 0;
+  height: 280px;
+  background: radial-gradient(ellipse at 50% 120%, rgba(20, 20, 26, 0.95) 40%, transparent 80%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ============================================================
+   3D Studio Stage Container
+   ============================================================ */
+
+#studio-3d-stage {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  height: 640px;
+  background: radial-gradient(circle at 50% 30%, #202028 0%, #0c0c0f 100%);
+  border-radius: 24px;
+  border: 4px solid #23232c;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9);
+}
+
+/* Active Tabs & Buttons */
+.active-tab {
+  background: var(--hb-orange) !important;
+  color: #000 !important;
+  font-weight: 800 !important;
+}
+
+.active-model, .active-scene, .active-aspect {
   background-color: var(--hb-orange) !important;
   color: #000 !important;
   font-weight: 700 !important;
   border-color: var(--hb-orange) !important;
 }
 
-/* CNC Machined Texture Details */
-.cnc-panel {
-  background: linear-gradient(180deg, #1d1d23 0%, #15151a 100%);
-  border: 1px solid #2b2b36;
+/* Custom Styled Range Slider */
+input[type=range] {
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: #27272a;
+  outline: none;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #0e0e11;
-}
-::-webkit-scrollbar-thumb {
-  background: #2b2b36;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   background: var(--hb-orange);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  border: 2px solid #fff;
 }
